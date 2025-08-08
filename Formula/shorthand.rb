@@ -1,8 +1,11 @@
 class Shorthand < Formula
   desc "Very lightweight local only prompt-to-command CLI for macos (prompt-to-command via Ollama)"
   homepage "https://github.com/nohlson/shorthand"
-  head "https://github.com/nohlson/shorthand.git", branch: "main"
+  url "https://github.com/nohlson/shorthand/archive/refs/tags/v0.1.0.tar.gz"
+  sha256 "<FILL_ME_AFTER_TAGGING_RELEASE>"
   license "MIT"
+
+  head "https://github.com/nohlson/shorthand.git", branch: "main"
 
   depends_on "node"
 
@@ -19,24 +22,22 @@ class Shorthand < Formula
 
   def caveats
     <<~EOS
-      Dependencies:
-        - Requires Ollama. Install: brew install ollama
-        - Start service: brew services start ollama
-
-      One-time setup:
-        shorthand-init
-
-      Zsh widget:
-        Add to your ~/.zshrc:
-          source "$(brew --prefix)/opt/shorthand/share/shorthand/_coprompt.zsh"
-
-      Usage:
-        termgen --model=cmdgen "list files recursively"
+      Quick start:
+        1) Install and start Ollama:
+           brew install ollama && brew services start ollama
+        2) One-time model setup:
+           shorthand-init
+        3) Add the Zsh widget to ~/.zshrc:
+           source "$(brew --prefix)/opt/shorthand/share/shorthand/_coprompt.zsh"
+        4) Use it: open a new terminal, press Ctrl+G, type your prompt. Command is inserted into the buffer (not auto-run).
     EOS
   end
 
   test do
-    # Without Ollama, CLI exits non-zero; ensure binary exists and runs.
-    assert_equal "", shell_output("#{bin}/termgen 'hello' 2>/dev/null", 2)
+    # Without Ollama running, the CLI should exit non-zero (2)
+    output = shell_output("#{bin}/termgen 'hello' 2>/dev/null", 2)
+    assert_equal "", output
   end
 end
+
+
