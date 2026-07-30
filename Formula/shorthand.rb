@@ -12,10 +12,14 @@ class Shorthand < Formula
   def install
     bin.install "bin/termgen"
     bin.install "bin/shorthand-init"
+    bin.install "bin/shorthand-model"
+    bin.install "bin/shorthand-common.sh"
     chmod 0555, bin/"termgen"
     chmod 0555, bin/"shorthand-init"
+    chmod 0555, bin/"shorthand-model"
+    chmod 0444, bin/"shorthand-common.sh"
 
-    (share/"shorthand").install "Modelfile"
+    (share/"shorthand").install "Modelfile.system"
     (share/"shorthand").install "zsh/_coprompt.zsh"
     prefix.install "README.md"
   end
@@ -30,6 +34,13 @@ class Shorthand < Formula
         3) Add the Zsh widget to ~/.zshrc:
            source "$(brew --prefix)/opt/shorthand/share/shorthand/_coprompt.zsh"
         4) Use it: open a new terminal, press Ctrl+G, type your prompt. Command is inserted into the buffer (not auto-run).
+
+      Switch base models or edit the prompt anytime with:
+        shorthand-model list           # suggested base models + current one
+        shorthand-model use <model>    # pulls (if needed) and rebuilds cmdgen from <model>
+        shorthand-model status         # show current base model + prompt file path
+        shorthand-model edit-prompt    # opens the system prompt in $EDITOR, then rebuilds
+        shorthand-model rebuild        # rebuild cmdgen after manually editing the prompt
     EOS
   end
 
@@ -39,5 +50,3 @@ class Shorthand < Formula
     assert_equal "", output
   end
 end
-
-
